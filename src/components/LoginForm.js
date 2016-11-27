@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
-import { emailChanged, passwordChanged } from '../actions';
-import { Card, CardSection, Input, Button } from './common';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -14,7 +14,27 @@ class LoginForm extends Component {
     this.props.passwordChanged(text);
   }
 
+  onLoginButton() {
+    console.log('Button Pressed in Componenet');
+    const { email, password } = this.props;
+
+    this.props.loginUser({ email, password });
+  }
+
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner />;
+    }
+
+    return (
+      <Button onPress={this.onLoginButton.bind(this)}>
+        Login
+      </Button>
+    );
+  }
+
   render() {
+    console.log('Current props: ', this.props);
     return (
       <Card>
         <CardSection>
@@ -32,24 +52,50 @@ class LoginForm extends Component {
             label="Password"
             placeholder="123456"
             onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password}
           />
         </CardSection>
 
+        <Text style={styles.errorTextStyle}>
+          {this.props.error}
+        </Text>
+        <Text style={styles.successTextStyle}>
+          {this.props.success}
+        </Text>
+
         <CardSection>
-          <Button>
-            Login
-          </Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
   }
 }
 
+const styles = {
+  errorTextStyle: {
+    color: 'red',
+    fontSize: 20,
+    alignSelf: 'center',
+  },
+  successTextStyle: {
+    color: 'green',
+    fontSize: 20,
+    alignSelf: 'center',
+  }
+};
+
 const mapStateToProps = (state) => {
   return {
     email: state.auth.email,
-    password: state.auth.email
+    password: state.auth.password,
+    user: state.auth.user,
+    error: state.auth.error,
+    loading: state.auth.loading,
+    success: state.auth.success,
   };
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged })(LoginForm);
+export default connect(mapStateToProps,
+                      { emailChanged,
+                        passwordChanged,
+                        loginUser })(LoginForm);
