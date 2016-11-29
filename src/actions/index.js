@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 
 // Action creators do the logic work. Like a controller or model
 import { EMAIL_CHANGED,
@@ -48,6 +49,8 @@ export const loginUser = ({ email, password }) => {
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
+
+  Actions.employeeList();
 };
 
 const loginUserFail = (dispatch) => {
