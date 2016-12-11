@@ -7,9 +7,10 @@ import { Card, CardSection, Input, Button } from './common';
 
 class EmployeeCreate extends Component {
   onButtonPress() {
+    console.log("Pressing Button");
     const { name, phone, shift } = this.props;
 
-    this.props.emplyeeCreate({ name, phone, shift });
+    this.props.employeeCreate({ name, phone, shift });
   }
 
   render() {
@@ -42,7 +43,7 @@ class EmployeeCreate extends Component {
           >
             <Picker.Item label="Monday" value="Monday" />
             <Picker.Item label="Tuesday" value="Tuesday" />
-            <Picker.Item label="Wednestday" value="Wednestday" />
+            <Picker.Item label="Wednesday" value="Wednestday" />
             <Picker.Item label="Thursday" value="Thursday" />
             <Picker.Item label="Friday" value="Friday" />
             <Picker.Item label="Saturday" value="Saturday" />
@@ -51,7 +52,7 @@ class EmployeeCreate extends Component {
         </CardSection>
 
         <CardSection>
-          <Button onButtonPress={this.onButtonPress.bind(this)}>
+          <Button onPress={this.onButtonPress.bind(this)}>
             Create
           </Button>
         </CardSection>
